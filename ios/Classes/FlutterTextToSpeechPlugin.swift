@@ -7,10 +7,10 @@ public class FlutterTextToSpeechPlugin: NSObject, FlutterPlugin {
   private var textToSpeechChannel: FlutterMethodChannel!
 
   public static func register(with registrar: FlutterPluginRegistrar) {
-    initializeTextToSpeechService()
-    initializeTextToSpeechChannel(registrar.messenger())
     let instance = FlutterTextToSpeechPlugin()
-    registrar.addMethodCallDelegate(instance, channel: textToSpeechChannel)
+    instance.initializeTextToSpeechService()
+    instance.initializeTextToSpeechChannel(binaryMessenger: registrar.messenger())
+    registrar.addMethodCallDelegate(instance, channel: instance.textToSpeechChannel)
   }
 
   private func initializeTextToSpeechService() {
