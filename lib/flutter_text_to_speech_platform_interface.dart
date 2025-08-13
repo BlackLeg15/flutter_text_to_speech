@@ -23,7 +23,7 @@ abstract class FlutterTextToSpeechPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
+  Future<void> speak(String text) async {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 }

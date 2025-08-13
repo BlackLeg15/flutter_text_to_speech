@@ -1,17 +1,42 @@
 import Flutter
 import UIKit
+import AVFoundation
 
 public class FlutterTextToSpeechPlugin: NSObject, FlutterPlugin {
+  private var synthesizer: AVSpeechSynthesizer!
+  private var textToSpeechChannel: FlutterMethodChannel!
+
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "flutter_text_to_speech", binaryMessenger: registrar.messenger())
+    initializeTextToSpeechService()
+    initializeTextToSpeechChannel(registrar.messenger())
     let instance = FlutterTextToSpeechPlugin()
-    registrar.addMethodCallDelegate(instance, channel: channel)
+    registrar.addMethodCallDelegate(instance, channel: textToSpeechChannel)
+  }
+
+  private func initializeTextToSpeechService() {
+    synthesizer = AVSpeechSynthesizer()
+  }
+
+  private func initializeTextToSpeechChannel(binaryMessenger: FlutterBinaryMessenger) {
+    textToSpeechChannel = FlutterMethodChannel(
+      name: "flutter_text_to_speech",
+      binaryMessenger: binaryMessenger
+    )
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
     switch call.method {
-    case "getPlatformVersion":
-      result("iOS " + UIDevice.current.systemVersion)
+    case "speak":
+      let text = call.arguments as? String
+      let isTextNotEmpty = text?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
+      if let validText = text, isTextNotEmpty {
+        let utterance = AVSpeechUtterance(string: validText)
+        utterance.voice = AVSpeechSynthesisVoice(language: "pt-BR")
+        synthesizer?.speak(utterance)
+        result(nil)
+      } else {
+        result(FlutterError(code: "INVALID_ARGUMENT", message: "O texto passado está vazio ou nulo.", details: nil))
+      }
     default:
       result(FlutterMethodNotImplemented)
     }

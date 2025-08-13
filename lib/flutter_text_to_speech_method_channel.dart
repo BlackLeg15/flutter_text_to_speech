@@ -10,8 +10,7 @@ class MethodChannelFlutterTextToSpeech extends FlutterTextToSpeechPlatform {
   final methodChannel = const MethodChannel('flutter_text_to_speech');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
+  Future<void> speak(String text) async {
+    await methodChannel.invokeMethod('speak', text);
   }
 }

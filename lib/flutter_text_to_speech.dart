@@ -2,7 +2,7 @@
 import 'flutter_text_to_speech_platform_interface.dart';
 
 class FlutterTextToSpeech {
-  Future<String?> getPlatformVersion() {
-    return FlutterTextToSpeechPlatform.instance.getPlatformVersion();
+  Future<void> speak(String text) {
+    return FlutterTextToSpeechPlatform.instance.speak(text);
   }
 }
