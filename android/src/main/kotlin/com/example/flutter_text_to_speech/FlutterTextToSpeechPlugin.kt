@@ -1,7 +1,9 @@
 package com.example.flutter_text_to_speech
 
+import android.content.Context
 import android.speech.tts.TextToSpeech
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
@@ -19,7 +21,7 @@ class FlutterTextToSpeechPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     initializeTextToSpeechChannel(flutterPluginBinding.binaryMessenger)
-    initializeTextToSpeechService(applicationContext)
+    initializeTextToSpeechService(flutterPluginBinding.applicationContext)
   }
 
   private fun initializeTextToSpeechChannel(binaryMessenger: BinaryMessenger) {
